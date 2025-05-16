@@ -3,7 +3,7 @@ name: common-test
 version: 0.1.0
 dependencies:
   - name: common
-    version: 0.1.0
-    repository: "file://../../common"
+    version: 2.0.0
+    repository: "file://../../charts/common"
 description: A test chart for the common library chart
 

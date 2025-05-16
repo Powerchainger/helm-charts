@@ -1,4 +1,13 @@
 {{- define "common.resources" -}}
+{{- with include "common.resources.values" . -}}
+resources:
+{{- . | nindent 2 -}}
+{{- end -}}
+{{- end -}}
+
+---
+
+{{- define "common.resources.values" -}}
 {{- $presetValue := include "common.resources._internal" . | fromYaml -}}
 {{- if kindIs "map" . -}}
 {{- if or (hasKey . "requests") (hasKey . "limits") -}}
