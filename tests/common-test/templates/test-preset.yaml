@@ -1,0 +1,26 @@
+test: {{ include "common.resources.utils.preset-value-picker" (list "medium" (dict "nano" 128 "tiny" 256 "small" 512 "medium" 1024)) }}
+test1: {{ include "common.resources.utils.preset-value-picker" (list "small" (include "common.resources.cpu-preset" $ | fromYaml) )}}
+test2:
+  {{- include "common.resources" $ | nindent 2 }}
+test3:
+  {{- include "common.resources" "large" | nindent 2 }}
+test4:
+  {{- include "common.resources" (list "small" "large") | nindent 2 }}
+test5:
+  {{- include "common.resources" (dict "presets" (dict "requests" "small" "limits" "large")) | nindent 2 }}
+test6:
+  {{- include "common.resources" .Values.resources_without_set_limits | nindent 2 }}
+test7:
+  {{- include "common.resources" .Values.resources_no_limits | nindent 2 }}
+test8:
+  {{- include "common.resources" .Values.resources | nindent 2 }}
+test9_resources_with_override:
+  {{- include "common.resources" .Values.resources_with_override | nindent 2 }}
+test10_resources_with_requests_override:
+  {{- include "common.resources" .Values.resources_with_requests_override | nindent 2 }}
+test11_resources_with_limits_override:
+  {{- include "common.resources" .Values.resources_with_limits_override | nindent 2 }}
+test12_resources_remove_Limits:
+  {{- include "common.resources" .Values.resources_remove_Limits | nindent 2 }}
+test12_resources_remove_Limits_cpu:
+  {{- include "common.resources" .Values.resources_remove_Limits_cpu | nindent 2 }}

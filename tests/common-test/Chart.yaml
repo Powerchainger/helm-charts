@@ -1,0 +1,9 @@
+apiVersion: v2
+name: common-test
+version: 0.1.0
+dependencies:
+  - name: common
+    version: 0.1.0
+    repository: "file://../../common"
+description: A test chart for the common library chart
+

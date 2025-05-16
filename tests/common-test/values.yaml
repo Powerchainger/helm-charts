@@ -1,0 +1,57 @@
+# values for the common-test chart
+
+resources_without_set_limits:
+  presets:
+    requests: small
+
+resources_no_limits:
+  presets:
+    requests: small
+    limits: none
+
+resources_with_requests_override:
+  presets:
+    requests: small
+    limits: large
+  requests:
+    cpu: cpu
+    memory: memory
+
+resources_with_limits_override:
+  presets:
+    requests: small
+    limits: large
+  limits:
+    cpu: cpu
+    memory: memory
+
+resources_remove_Limits:
+  presets:
+    requests: small
+    limits: large
+  limits:
+    cpu: none
+    memory: none
+
+resources_remove_Limits_cpu:
+  presets:
+    requests: small
+    limits: large
+  limits:
+    cpu: none
+
+resources_with_override:
+  presets:
+    requests: small
+    limits: large
+  requests:
+    cpu: cpu
+    memory: memory
+  limits:
+    cpu: cpu
+    memory: memory
+
+resources:
+  presets:
+    requests: small
+    limits: large
