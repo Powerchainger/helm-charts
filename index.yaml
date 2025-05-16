@@ -3,6 +3,16 @@ entries:
   common:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2025-05-16T18:00:30.719535479Z"
+    description: Common helm charts library
+    digest: 4b3879becd9ca537453c7c7af1f7e592ec449515d7edeb450ce5f08336fe12c5
+    name: common
+    type: library
+    urls:
+    - https://github.com/Powerchainger/helm-charts/releases/download/common-2.0.0/common-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2025-05-16T15:07:45.942929393Z"
     description: Common helm charts library
     digest: b013de42bb81eae1fdb3d7f63c41aaf3baa71f016f309c1d0cea395da75d363c
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/Powerchainger/helm-charts/releases/download/test-0.1.2/test-0.1.2.tgz
     version: 0.1.2
-generated: "2025-05-16T15:07:45.942934433Z"
+generated: "2025-05-16T18:00:30.71956202Z"
