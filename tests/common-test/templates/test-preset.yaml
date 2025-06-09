@@ -24,3 +24,5 @@ test12_resources_remove_Limits:
   {{- include "common.resources" .Values.resources_remove_Limits | nindent 2 }}
 test12_resources_remove_Limits_cpu:
   {{- include "common.resources" .Values.resources_remove_Limits_cpu | nindent 2 }}
+empty_resources:
+  {{- include "common.resources" .Values.empty_resources | nindent 2 }}
