@@ -1,0 +1,5 @@
+monitoring: 
+  application: "test-monitoring"
+  test: test
+  dotnet:
+    application: '{{ include "test.fullname" . }}'

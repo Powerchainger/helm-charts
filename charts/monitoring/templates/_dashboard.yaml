@@ -1,0 +1,17 @@
+{{- define "monitoring.grafana.dashboard" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .name }}-{{ .gender }}-grafana-dashboards
+  annotations:
+    {{ with .folder -}}
+    grafana/dashboards_folder: {{ . }}
+    {{- end }}
+  labels:
+    {{- with .labels }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+    grafana_dashboard: "1"
+data:
+  {{.data | nindent 2}}
+{{- end -}}

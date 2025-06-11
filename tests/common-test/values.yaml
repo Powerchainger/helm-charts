@@ -55,3 +55,5 @@ resources:
   presets:
     requests: small
     limits: large
+
+empty_resources:
