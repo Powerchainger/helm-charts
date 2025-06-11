@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .name }}-{{ .gender }}-grafana-dashboards
+  name: {{ .application }}-{{ .gender }}-grafana-dashboards
   annotations:
     {{ with .folder -}}
     grafana/dashboards_folder: {{ . }}

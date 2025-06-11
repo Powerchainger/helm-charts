@@ -1,8 +1,7 @@
-name: "{{ .application }}-{{ .namespace }}"
 labels:
-folder: "{{ .application }}"
-application: 
-namespace: "{{ .Release.Namespace }}"
+folder:
+application:
+namespace:
 
 dotnet:
   enabled: true
