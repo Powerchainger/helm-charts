@@ -37,7 +37,7 @@
       "title": "Reset",
       "tooltip": "",
       "type": "link",
-      "url": "/d/{{ .name }}-asp-net-core/asp-net-core-metrics"
+      "url": "/d/{{ .uid }}-asp-net-core/asp-net-core-metrics"
     }
   ],
   "panels": [
@@ -1046,7 +1046,7 @@
                   {
                     "targetBlank": false,
                     "title": "${__data.fields.http_request_method} ${__data.fields.http_route}",
-                    "url": "/d/{{ .name }}-asp-net-core/asp-net-core-endpoint-details?${namespace:queryparam}&${job:queryparam}&${pod:queryparam}&var-route=${__data.fields.http_route}&var-method=${__data.fields.http_request_method}&${__url_time_range}"
+                    "url": "/d/{{ .uid }}-asp-net-core/asp-net-core-endpoint-details?${namespace:queryparam}&${job:queryparam}&${pod:queryparam}&var-route=${__data.fields.http_route}&var-method=${__data.fields.http_request_method}&${__url_time_range}"
                   }
                 ]
               }
@@ -1220,7 +1220,7 @@
                   {
                     "targetBlank": false,
                     "title": "${__data.fields.http_request_method} ${__data.fields.http_route}",
-                    "url": "/d/{{ .name }}-asp-net-core/asp-net-core-endpoint-details?${namespace:queryparam}&${job:queryparam}&${pod:queryparam}&var-route=${__data.fields.http_route}&var-method=${__data.fields.http_request_method}&${__url_time_range}"
+                    "url": "/d/{{ .uid }}-asp-net-core/asp-net-core-endpoint-details?${namespace:queryparam}&${job:queryparam}&${pod:queryparam}&var-route=${__data.fields.http_route}&var-method=${__data.fields.http_request_method}&${__url_time_range}"
                   }
                 ]
               }
@@ -1493,7 +1493,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "ASP.NET Core",
-  "uid": "{{ .name }}-asp-net-core",
+  "uid": "{{ .uid }}-asp-net-core",
   "version": 4,
   "weekStart": ""
 }

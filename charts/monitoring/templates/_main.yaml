@@ -1,0 +1,11 @@
+{{- define "monitoring.grafana" -}}
+  {{- $values := merge .context (dict "uid" (printf "%s-%s" .context.application .context.namespace )) }}
+  {{- if $values.dotnet.enabled }}
+    {{- with .files.Glob "grafana/dotnet/dashboards/*" }}
+    {{- $data := (tpl .AsConfig $values ) }}
+    {{- $file_context := (merge $values (dict "data" $data "gender" "dotnet") ) }}
+---
+{{ include "monitoring.grafana.dashboard" $file_context }}
+    {{- end }}
+  {{- end }}
+{{- end -}}
