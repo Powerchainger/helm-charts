@@ -24,6 +24,16 @@ entries:
   monitoring:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2025-06-12T09:13:17.714013892Z"
+    description: Monitoring
+    digest: 761b037d0c50e3ad541bea9d076f03e32c3c86eb37459870ecbee3a7c57243de
+    name: monitoring
+    type: library
+    urls:
+    - https://github.com/Powerchainger/helm-charts/releases/download/monitoring-2.0.0/monitoring-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2025-06-11T09:29:00.905708469Z"
     description: Monitoring
     digest: 174f782ec84e69f3dc89b14fd36eeaffd705b416dab5fb529efdc250c60c761a
@@ -42,4 +52,4 @@ entries:
     urls:
     - https://github.com/Powerchainger/helm-charts/releases/download/test-0.1.2/test-0.1.2.tgz
     version: 0.1.2
-generated: "2025-06-11T09:29:00.905715192Z"
+generated: "2025-06-12T09:13:17.714028249Z"
