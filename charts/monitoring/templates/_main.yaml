@@ -1,11 +1,22 @@
 {{- define "monitoring.grafana" -}}
   {{- $values := merge .context (dict "uid" (printf "%s-%s" .context.application .context.namespace )) }}
+
   {{- if $values.dotnet.enabled }}
     {{- with .files.Glob "grafana/dotnet/dashboards/*" }}
-    {{- $data := (tpl .AsConfig $values ) }}
-    {{- $file_context := (merge $values (dict "data" $data "gender" "dotnet") ) }}
+    {{- $dashboards_data := (tpl .AsConfig $values ) }}
+    {{- $dashboards_file_context := merge (dict) $values (dict "data" $dashboards_data "gender" "dotnet") }}
 ---
-{{ include "monitoring.grafana.dashboard" $file_context }}
+{{ include "monitoring.grafana.dashboard" $dashboards_file_context }}
     {{- end }}
   {{- end }}
+
+  {{- if $values.alerting.enabled }}
+    {{- with .files.Glob "grafana/dotnet/alerting/*.yaml" }}
+    {{- $alerts_data := (tpl .AsConfig $values ) }}
+    {{- $alerts_file_context := merge (dict) $values (dict "data" $alerts_data "gender" "alerting-rules") }}
+---
+{{ include "monitoring.grafana.alerting_rule" $alerts_file_context }}
+    {{- end }}
+  {{- end }}
+
 {{- end -}}
