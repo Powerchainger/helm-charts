@@ -1,6 +1,7 @@
+apiVersion: 1
 groups:
-  - orgId: 1
-    name: Measurement Service Alerts
+  - name: Measurement Service Alerts
+    folder: "test-alerts"
     interval: 1m
     rules:
       - uid: measurement_cpu_usage_high
