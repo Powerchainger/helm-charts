@@ -1,0 +1,94 @@
+groups:
+  - orgId: 1
+    name: Measurement Service Alerts
+    interval: 1m
+    rules:
+      - uid: measurement_cpu_usage_high
+        title: High Process CPU Usage
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                avg by (instance) (rate(process_cpu_time_seconds_total{job="measurement-service"}[5m])) * 100
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - type: query
+                  reducer: { type: last, params: [] }
+                  evaluator: { type: gt, params: [80] }
+        for: 5m
+        noDataState: NoData
+        execErrState: Alerting
+        labels:
+          severity: warning
+        annotations:
+          dashboardUID: 'alerts-dashboard'
+          panelId: '2'
+          summary: 'CPU for {{`{{ $values.A.Labels.instance }}`}} is over 80%'
+
+      - uid: measurement_dotnet_exceptions_high
+        title: High .NET Runtime Exception Rate
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                sum by (instance) (increase(process_runtime_dotnet_exceptions_count_total{service_name="measurement-service"}[2m]))
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - type: query
+                  reducer: { type: last, params: [] }
+                  evaluator: { type: gt, params: [5] }
+        for: 2m
+        noDataState: NoData
+        execErrState: Alerting
+        labels:
+          severity: critical
+        annotations:
+          dashboardUID: 'alerts-dashboard'
+          panelId: '4'
+          summary: 'More than 5 exceptions on {{`{{ $values.A.Labels.instance }}`}}'
+
+      - uid: measurement_http_5xx_errors_high
+        title: High percentage of 5xx errors
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                sum by (instance) (increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="measurement-service", http_route!~"/metrics|/ready|/alive"}[1m]))
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - type: query
+                  reducer: { type: last, params: [] }
+                  evaluator: { type: gt, params: [10] }
+        for: 1m
+        noDataState: NoData
+        execErrState: Alerting
+        labels:
+          severity: critical
+        annotations:
+          dashboardUID: 'alerts-dashboard'
+          panelId: '6'
+          summary: 'More than 10 5xx errors on {{`{{ $values.A.Labels.instance }}`}}'

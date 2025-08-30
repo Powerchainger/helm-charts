@@ -1,0 +1,13 @@
+{{- define "monitoring.grafana.alerting_rule" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .application }}-{{ .gender }}-grafana-rules
+  labels:
+    {{- with .labels }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+    grafana_alerting: "1"
+data:
+  {{.data | nindent 2}}
+{{- end -}}

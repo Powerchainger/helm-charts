@@ -1,0 +1,78 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "panels": [
+    {
+      "title": "CPU Usage (%)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "id": 2,
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg by (instance) (rate(process_cpu_time_seconds_total{job=\"measurement-service\"}[5m])) * 100",
+          "legendFormat": "{{`{{instance}}`}}"
+        }
+      ],
+      "options": { "legend": { "displayMode": "list", "showLegend": true } },
+      "fieldConfig": {
+        "defaults": { "unit": "percent", "min": 0, "max": 100 }
+      }
+    },
+    {
+      "title": ".NET Exception Rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "id": 4,
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (instance) (increase(process_runtime_dotnet_exceptions_count_total{service_name=\"measurement-service\"}[2m]))",
+          "legendFormat": "{{`{{instance}}`}}"
+        }
+      ]
+    },
+    {
+      "title": "HTTP 5xx Error Rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "id": 6,
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (instance) (increase(http_server_request_duration_seconds_count{http_response_status_code=~\"5..\", job=\"measurement-service\", http_route!~\"/metrics|/ready|/alive\"}[1m]))",
+          "legendFormat": "{{`{{instance}}`}}"
+        }
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": ["alerting"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Alerting Dashboard",
+  "uid": "alerts-dashboard",
+  "version": 1
+}
