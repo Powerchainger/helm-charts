@@ -21,7 +21,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (namespace, pod) (rate(process_cpu_time_seconds_total{job=\"$job\", namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) * 100",
+          "expr": "sum by (pod) (rate(process_cpu_time_seconds_total{job=\"$job\", pod=~\"$pod\"}[5m])) * 100",
           "legendFormat": "{{`{{pod}}`}}"
         }
       ],
@@ -42,7 +42,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (pod) (increase(process_runtime_dotnet_exceptions_count_total{job=\"$job\", namespace=~\"$namespace\", pod=~\"$pod\"}[2m]))",
+          "expr": "sum by (pod) (increase(process_runtime_dotnet_exceptions_count_total{job=\"$job\", pod=~\"$pod\"}[2m]))",
           "legendFormat": "{{`{{pod}}`}}"
         }
       ]
@@ -59,7 +59,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (pod) (increase(http_server_request_duration_seconds_count{http_response_status_code=~\"5..\", job=\"$job\", namespace=~\"$namespace\", pod=~\"$pod\", http_route!~\"/metrics|/ready|/alive\"}[1m]))",
+          "expr": "sum by (pod) (increase(http_server_request_duration_seconds_count{http_response_status_code=~\"5..\", job=\"$job\", pod=~\"$pod\", http_route!~\"/metrics|/ready|/alive\"}[1m]))",
           "legendFormat": "{{`{{pod}}`}}"
         }
       ]
@@ -91,26 +91,6 @@
           "selected": false,
           "text": "measurement-service",
           "value": "measurement-service"
-        }
-      },
-      {
-        "name": "namespace",
-        "label": "Namespace",
-        "type": "query",
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "query": "label_values(up{job=\"$job\"}, namespace)",
-        "refresh": 2,
-        "hide": 0,
-        "includeAll": true,
-        "multi": true,
-        "allValue": ".*",
-        "current": {
-          "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
         }
       },
       {

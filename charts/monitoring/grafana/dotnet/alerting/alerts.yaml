@@ -13,7 +13,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (namespace, pod) (rate(process_cpu_time_seconds_total{job="$job", namespace=~"$namespace", pod=~"$pod"}[5m])) * 100
+                sum by (pod) (rate(process_cpu_time_seconds_total{job="$job", pod=~"$pod"}[5m])) * 100
               refId: A
           - refId: B
             datasourceUid: __expr__
@@ -32,7 +32,8 @@ groups:
         annotations:
           __dashboardUid__: 'alerts-dashboard-test'
           __panelId__: '2'
-          summary: 'CPU is over 80%'
+          summary: "CPU is over 80% for service {{`{{ .application }}`}} in namespace {{`{{ .namespace }}`}}"
+          description: "Service: {{`{{ .application }}`}} | Namespace: {{`{{ .namespace }}`}}"
 
       - uid: measurement_dotnet_exceptions_high
         title: High .NET Runtime Exception Rate
@@ -62,7 +63,8 @@ groups:
         annotations:
           __dashboardUid__: 'alerts-dashboard-test'
           __panelId__: '4'
-          summary: 'More than 5 exceptions exceptions'
+          summary: "More than 5 exceptions (2m) for service {{`{{ .application }}`}} in namespace {{`{{ .namespace }}`}}"
+          description: "Service: {{`{{ .application }}`}} | Namespace: {{`{{ .namespace }}`}}"
 
       - uid: measurement_http_5xx_errors_high
         title: High percentage of 5xx errors
@@ -92,4 +94,6 @@ groups:
         annotations:
           __dashboardUid__: 'alerts-dashboard-test'
           __panelId__: '6'
-          summary: 'More than 10 5xx errors'
+          summary: "More than 10 5xx errors (1m) for service {{`{{ .application }}`}} in namespace {{`{{ .namespace }}`}}"
+          description: "Service: {{`{{ .application }}`}} | Namespace: {{`{{ .namespace }}`}}"
+

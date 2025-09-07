@@ -1267,10 +1267,10 @@
         "allValue": ".*",
         "current": {
           "text": [
-            "measurement-service"
+            "{{`{{ .application }}`}}"
           ],
           "value": [
-            "measurement-service"
+            "{{`{{ .application }}`}}"
           ]
         },
         "datasource": {
