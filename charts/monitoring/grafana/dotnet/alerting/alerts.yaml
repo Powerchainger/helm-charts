@@ -30,7 +30,7 @@ groups:
         labels:
           severity: warning
         annotations:
-          __dashboardUid__: 'alerts-dashboard-test'
+          __dashboardUid__: '{{ .uid }}-alerts-dashboard'
           __panelId__: '2'
           summary: "CPU is over 80% for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
@@ -61,7 +61,7 @@ groups:
         labels:
           severity: critical
         annotations:
-          __dashboardUid__: 'alerts-dashboard-test'
+          __dashboardUid__: '{{ .uid }}-alerts-dashboard'
           __panelId__: '4'
           summary: "More than 5 exceptions (2m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
@@ -92,7 +92,7 @@ groups:
         labels:
           severity: critical
         annotations:
-          __dashboardUid__: 'alerts-dashboard-test'
+          __dashboardUid__: '{{ .uid }}-alerts-dashboard'
           __panelId__: '6'
           summary: "More than 10 5xx errors (1m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"

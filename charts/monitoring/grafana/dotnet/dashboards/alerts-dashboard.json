@@ -21,7 +21,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (pod) (rate(process_cpu_time_seconds_total{job=\"$job\", namespace=\"{{ .namespace }}\", pod=~\"$pod\"}[5m])) * 100",
+          "expr": "sum by (pod, namespace) (rate(process_cpu_time_seconds_total{job=\"$job\", namespace=\"{{ .namespace }}\", pod=~\"$pod\"}[5m])) * 100",
           "legendFormat": "{{`{{pod}}`}}"
         }
       ],
@@ -116,6 +116,6 @@
     ]
   },
   "title": "Alerting Dashboard Test",
-  "uid": "alerts-dashboard-test",
+  "uid": "{{ .uid }}-alerts-dashboard",
   "version": 1
 }
