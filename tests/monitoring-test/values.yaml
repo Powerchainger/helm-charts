@@ -1,0 +1,5 @@
+alerting:
+  enabled: true
+
+dotnet:
+  enabled: true

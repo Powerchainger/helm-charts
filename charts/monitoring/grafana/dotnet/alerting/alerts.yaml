@@ -1,7 +1,7 @@
 apiVersion: 1
 groups:
   - name: Measurement Service Alerts
-    folder: "test-alerts"
+    folder: "alerts-test"
     interval: 1m
     rules:
       - uid: measurement_cpu_usage_high
@@ -13,7 +13,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                avg by (instance) (rate(process_cpu_time_seconds_total{job="measurement-service"}[5m])) * 100
+                sum by (namespace, pod) (rate(process_cpu_time_seconds_total{job="$job", namespace=~"$namespace", pod=~"$pod"}[5m])) * 100
               refId: A
           - refId: B
             datasourceUid: __expr__
@@ -30,9 +30,9 @@ groups:
         labels:
           severity: warning
         annotations:
-          dashboardUID: 'alerts-dashboard'
-          panelId: '2'
-          summary: 'CPU for {{`{{ $values.A.Labels.instance }}`}} is over 80%'
+          __dashboardUid__: 'alerts-dashboard-test'
+          __panelId__: '2'
+          summary: 'CPU is over 80%'
 
       - uid: measurement_dotnet_exceptions_high
         title: High .NET Runtime Exception Rate
@@ -43,7 +43,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (instance) (increase(process_runtime_dotnet_exceptions_count_total{service_name="measurement-service"}[2m]))
+                sum by (pod) (increase(process_runtime_dotnet_exceptions_count_total{job="measurement-service", pod=~".*"}[2m]))
               refId: A
           - refId: B
             datasourceUid: __expr__
@@ -60,9 +60,9 @@ groups:
         labels:
           severity: critical
         annotations:
-          dashboardUID: 'alerts-dashboard'
-          panelId: '4'
-          summary: 'More than 5 exceptions on {{`{{ $values.A.Labels.instance }}`}}'
+          __dashboardUid__: 'alerts-dashboard-test'
+          __panelId__: '4'
+          summary: 'More than 5 exceptions exceptions'
 
       - uid: measurement_http_5xx_errors_high
         title: High percentage of 5xx errors
@@ -73,7 +73,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (instance) (increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="measurement-service", http_route!~"/metrics|/ready|/alive"}[1m]))
+                sum by (pod) (increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="measurement-service", pod=~".*", http_route!~"/metrics|/ready|/alive"}[1m]))
               refId: A
           - refId: B
             datasourceUid: __expr__
@@ -90,6 +90,6 @@ groups:
         labels:
           severity: critical
         annotations:
-          dashboardUID: 'alerts-dashboard'
-          panelId: '6'
-          summary: 'More than 10 5xx errors on {{`{{ $values.A.Labels.instance }}`}}'
+          __dashboardUid__: 'alerts-dashboard-test'
+          __panelId__: '6'
+          summary: 'More than 10 5xx errors'
