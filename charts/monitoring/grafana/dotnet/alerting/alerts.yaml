@@ -1,10 +1,10 @@
 apiVersion: 1
 groups:
-  - name: Measurement Service Alerts
+  - name: Services Alerts
     folder: "alerts-test"
     interval: 1m
     rules:
-      - uid: measurement_cpu_usage_high
+      - uid: service_cpu_usage_high
         title: High Process CPU Usage
         condition: B
         data:
@@ -35,7 +35,7 @@ groups:
           summary: "CPU is over 80% for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
 
-      - uid: measurement_dotnet_exceptions_high
+      - uid: service_dotnet_exceptions_high
         title: High .NET Runtime Exception Rate
         condition: B
         data:
@@ -66,7 +66,7 @@ groups:
           summary: "More than 5 exceptions (2m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
 
-      - uid: measurement_http_5xx_errors_high
+      - uid: service_http_5xx_errors_high
         title: High percentage of 5xx errors
         condition: B
         data:
