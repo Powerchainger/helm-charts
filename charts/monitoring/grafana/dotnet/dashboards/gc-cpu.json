@@ -1267,10 +1267,10 @@
         "allValue": ".*",
         "current": {
           "text": [
-            "{{`{{ .application }}`}}"
+            "{{ .application }}"
           ],
           "value": [
-            "{{`{{ .application }}`}}"
+            "{{ .application }}"
           ]
         },
         "datasource": {
