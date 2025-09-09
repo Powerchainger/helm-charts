@@ -1,5 +1,5 @@
 {{- define "monitoring.grafana" -}}
-  {{- $values := merge .context (dict "uid" (printf "%s-%s" .context.application .context.namespace )) }}
+  {{- $values := merge .context }}
 
   {{- if $values.dotnet.enabled }}
     {{- with .files.Glob "grafana/dotnet/dashboards/*" }}
