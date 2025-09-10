@@ -1,5 +1,5 @@
-{{- $app := "test" -}}
-{{- $context := dict "application" $app "folder" $app "namespace" "test1" }}
+{{- $app := "measurement-service" -}}
+{{- $context := dict "application" $app "folder" $app "namespace" "test1" "uid" "ms-test1" }}
 {{- $context = merge $context .Values.monitoring }}
 {{- $context = dict "context" $context }}
 {{- $files := (dict "files" .Subcharts.monitoring.Files) }}

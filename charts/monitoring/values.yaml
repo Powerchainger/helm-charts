@@ -3,5 +3,8 @@ folder:
 application:
 namespace:
 
+alerting:
+  enabled: true
+
 dotnet:
   enabled: true

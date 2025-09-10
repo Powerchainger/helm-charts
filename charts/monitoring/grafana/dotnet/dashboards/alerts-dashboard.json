@@ -1,0 +1,121 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "panels": [
+    {
+      "title": "CPU Usage (%)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "id": 2,
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (pod, namespace) (rate(process_cpu_time_seconds_total{job=\"$job\", namespace=\"{{ .namespace }}\", pod=~\"$pod\"}[5m])) * 100",
+          "legendFormat": "{{`{{pod}}`}}"
+        }
+      ],
+      "options": { "legend": { "displayMode": "list", "showLegend": true } },
+      "fieldConfig": {
+        "defaults": { "unit": "percent", "min": 0, "max": 100 }
+      }
+    },
+    {
+      "title": ".NET Exception Rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "id": 4,
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (pod) (increase(process_runtime_dotnet_exceptions_count_total{job=\"$job\", namespace=\"{{ .namespace }}\", pod=~\"$pod\"}[2m]))",
+          "legendFormat": "{{`{{pod}}`}}"
+        }
+      ]
+    },
+    {
+      "title": "HTTP 5xx Error Rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "id": 6,
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (pod) (increase(http_server_request_duration_seconds_count{http_response_status_code=~\"5..\", job=\"$job\", namespace=\"{{ .namespace }}\", pod=~\"$pod\", http_route!~\"/metrics|/ready|/alive\"}[1m]))",
+          "legendFormat": "{{`{{pod}}`}}"
+        }
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": ["alerting"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "templating": {
+    "list": [
+      {
+        "name": "job",
+        "label": "Job",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(up, job)",
+        "refresh": 2,
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": false,
+          "text": "{{ .application }}",
+          "value": "{{ .application }}"
+        }
+      },
+      {
+        "name": "pod",
+        "label": "Pod",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(up{job=\"$job\", namespace=\"{{ .namespace }}\"}, pod)",
+        "refresh": 2,
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        }
+      }
+    ]
+  },
+  "title": "Alerting Dashboard",
+  "uid": "{{ .uid }}-alerts-dashboard",
+  "version": 1
+}
