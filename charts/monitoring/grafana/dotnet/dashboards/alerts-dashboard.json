@@ -115,7 +115,7 @@
       }
     ]
   },
-  "title": "Alerting Dashboard Test",
+  "title": "Alerting Dashboard",
   "uid": "{{ .uid }}-alerts-dashboard",
   "version": 1
 }

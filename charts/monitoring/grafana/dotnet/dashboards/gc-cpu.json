@@ -1329,6 +1329,6 @@
   "timepicker": {},
   "timezone": "",
   "title": ".NET Metrics",
-  "uid": "KdDACDp4z",
+  "uid": "{{ .uid }}-net-metrics",
   "version": 52
 }
