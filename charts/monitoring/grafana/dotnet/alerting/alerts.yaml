@@ -6,7 +6,7 @@ groups:
     rules:
       - uid: service_cpu_usage_high
         title: High Process CPU Usage
-        condition: B
+        condition: C
         data:
           - refId: A
             datasourceUid: prometheus
@@ -18,11 +18,19 @@ groups:
           - refId: B
             datasourceUid: __expr__
             model:
-              type: threshold
+              type: reduce
               expression: A
+              reducer: last
+              settings:
+                mode: dropNN
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: B
               conditions:
                 - type: query
-                  reducer: { type: last, params: [] }
+                  reducer: { type: last , params: [] }
                   evaluator: { type: gt, params: [80] }
         for: 5m
         noDataState: NoData
@@ -37,7 +45,7 @@ groups:
 
       - uid: service_dotnet_exceptions_high
         title: High .NET Runtime Exception Rate
-        condition: B
+        condition: C
         data:
           - refId: A
             datasourceUid: prometheus
@@ -49,8 +57,16 @@ groups:
           - refId: B
             datasourceUid: __expr__
             model:
-              type: threshold
+              type: reduce
               expression: A
+              reducer: last
+              settings:
+                mode: dropNN
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: B
               conditions:
                 - type: query
                   reducer: { type: last, params: [] }
@@ -68,7 +84,7 @@ groups:
 
       - uid: service_http_5xx_errors_high
         title: High percentage of 5xx errors
-        condition: B
+        condition: C
         data:
           - refId: A
             datasourceUid: prometheus
@@ -80,8 +96,16 @@ groups:
           - refId: B
             datasourceUid: __expr__
             model:
-              type: threshold
+              type: reduce
               expression: A
+              reducer: last
+              settings:
+                mode: dropNN
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: B
               conditions:
                 - type: query
                   reducer: { type: last, params: [] }
