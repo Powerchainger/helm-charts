@@ -13,7 +13,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (pod) (rate(process_cpu_time_seconds_total{job="{{ .application }}", namespace="{{ .namespace }}"}[5m])) * 100
+                avg(rate(process_cpu_time_seconds_total{job="{{ .application }}", namespace="{{ .namespace }}"}[5m])) * 100
               refId: A
           - refId: B
             datasourceUid: __expr__
@@ -44,7 +44,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (pod) (increase(process_runtime_dotnet_exceptions_count_total{job="{{ .application }}", namespace="{{ .namespace }}"}[2m]))
+                sum(increase(process_runtime_dotnet_exceptions_count_total{job="{{ .application }}", namespace="{{ .namespace }}"}[2m]))
               refId: A
           - refId: B
             datasourceUid: __expr__
@@ -75,7 +75,7 @@ groups:
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (pod) (increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="{{ .application }}", namespace="{{ .namespace }}", http_route!~"/metrics|/ready|/alive"}[1m]))
+                sum(increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="{{ .application }}", namespace="{{ .namespace }}", http_route!~"/metrics|/ready|/alive"}[1m]))
               refId: A
           - refId: B
             datasourceUid: __expr__
