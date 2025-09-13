@@ -1,29 +1,39 @@
 apiVersion: 1
+deleteRules:
+
 groups:
   - name: Services Alerts
     folder: "{{ .application }}"
     interval: 1m
     rules:
-      - uid: service_cpu_usage_high
+      - uid: "{{ .uid }}-cpu-h"
         title: High Process CPU Usage
-        condition: B
+        condition: C
         data:
           - refId: A
             datasourceUid: prometheus
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (pod) (rate(process_cpu_time_seconds_total{job="{{ .application }}", namespace="{{ .namespace }}"}[5m])) * 100
+                avg(rate(process_cpu_time_seconds_total{job="{{ .application }}", namespace="{{ .namespace }}"}[5m])) * 100
               refId: A
           - refId: B
             datasourceUid: __expr__
             model:
-              type: threshold
+              type: reduce
               expression: A
+              reducer: last
+              settings:
+                mode: dropNN
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: B
               conditions:
                 - type: query
-                  reducer: { type: last, params: [] }
-                  evaluator: { type: gt, params: [80] }
+                  reducer: { type: last , params: [] }
+                  evaluator: { type: gt, params: [{{ .dotnet.alerting.cpu_threshold }}] }
         for: 5m
         noDataState: NoData
         execErrState: Alerting
@@ -32,29 +42,37 @@ groups:
         annotations:
           __dashboardUid__: '{{ .uid }}-alerts-dashboard'
           __panelId__: '2'
-          summary: "CPU is over 80% for service {{ .application }} in namespace {{ .namespace }}"
+          summary: "CPU is over {{ .dotnet.alerting.cpu_threshold }}% for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
 
-      - uid: service_dotnet_exceptions_high
+      - uid: "{{ .uid }}-exceptions-h"
         title: High .NET Runtime Exception Rate
-        condition: B
+        condition: C
         data:
           - refId: A
             datasourceUid: prometheus
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (pod) (increase(process_runtime_dotnet_exceptions_count_total{job="{{ .application }}", namespace="{{ .namespace }}"}[2m]))
+                sum(increase(process_runtime_dotnet_exceptions_count_total{job="{{ .application }}", namespace="{{ .namespace }}"}[2m]))
               refId: A
           - refId: B
             datasourceUid: __expr__
             model:
-              type: threshold
+              type: reduce
               expression: A
+              reducer: last
+              settings:
+                mode: dropNN
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: B
               conditions:
                 - type: query
                   reducer: { type: last, params: [] }
-                  evaluator: { type: gt, params: [5] }
+                  evaluator: { type: gt, params: [{{ .dotnet.alerting.exceptions_threshold }} ] }
         for: 2m
         noDataState: NoData
         execErrState: Alerting
@@ -63,29 +81,37 @@ groups:
         annotations:
           __dashboardUid__: '{{ .uid }}-alerts-dashboard'
           __panelId__: '4'
-          summary: "More than 5 exceptions (2m) for service {{ .application }} in namespace {{ .namespace }}"
+          summary: "More than {{ .dotnet.alerting.exceptions_threshold }} exceptions (2m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
 
-      - uid: service_http_5xx_errors_high
+      - uid: "{{ .uid }}-http-5xx-h"
         title: High percentage of 5xx errors
-        condition: B
+        condition: C
         data:
           - refId: A
             datasourceUid: prometheus
             relativeTimeRange: { from: 600, to: 0 }
             model:
               expr: |
-                sum by (pod) (increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="{{ .application }}", namespace="{{ .namespace }}", http_route!~"/metrics|/ready|/alive"}[1m]))
+                sum(increase(http_server_request_duration_seconds_count{http_response_status_code=~"5..", job="{{ .application }}", namespace="{{ .namespace }}", http_route!~"/metrics|/ready|/alive"}[1m]))
               refId: A
           - refId: B
             datasourceUid: __expr__
             model:
-              type: threshold
+              type: reduce
               expression: A
+              reducer: last
+              settings:
+                mode: dropNN
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: B
               conditions:
                 - type: query
                   reducer: { type: last, params: [] }
-                  evaluator: { type: gt, params: [10] }
+                  evaluator: { type: gt, params: [{{ .dotnet.alerting.http_5xx_threshold }}] }
         for: 1m
         noDataState: NoData
         execErrState: Alerting
@@ -94,5 +120,5 @@ groups:
         annotations:
           __dashboardUid__: '{{ .uid }}-alerts-dashboard'
           __panelId__: '6'
-          summary: "More than 10 5xx errors (1m) for service {{ .application }} in namespace {{ .namespace }}"
+          summary: "More than {{ .dotnet.alerting.http_5xx_threshold }} 5xx errors (1m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"

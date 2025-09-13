@@ -1,7 +1,7 @@
 {{- define "monitoring.grafana" -}}
   {{- $values := merge .context }}
 
-  {{- if $values.dotnet.enabled }}
+  {{- if $values.dotnet.dashboards }}
     {{- with .files.Glob "grafana/dotnet/dashboards/*" }}
     {{- $dashboards_data := (tpl .AsConfig $values ) }}
     {{- $dashboards_file_context := merge (dict) $values (dict "data" $dashboards_data "gender" "dotnet") }}
@@ -10,13 +10,17 @@
     {{- end }}
   {{- end }}
 
-  {{- if $values.alerting.enabled }}
-    {{- with .files.Glob "grafana/dotnet/alerting/*.yaml" }}
-    {{- $alerts_data := (tpl .AsConfig $values ) }}
-    {{- $alerts_file_context := merge (dict) $values (dict "data" $alerts_data "gender" "alerting-rules") }}
+  {{- if $values.dotnet.alerting.enabled }}
+    {{- $uid := $values.uid | default "default" }}
+    {{- $alerts_data := dict }}
+    {{- range $path, $content := .files.Glob "grafana/dotnet/alerting/*.yaml" }}
+      {{- $filename := base $path }}
+      {{- $prefixed_key := printf "%s_%s" $uid $filename }}
+      {{- $_ := set $alerts_data $prefixed_key (tpl ($content | toString) $values) }}
+    {{- end }}
+    {{- $alerts_file_context := merge (dict) $values (dict "data" ($alerts_data | toYaml) "gender" "dotnet") }}
 ---
 {{ include "monitoring.grafana.alerting_rule" $alerts_file_context }}
-    {{- end }}
   {{- end }}
 
 {{- end -}}

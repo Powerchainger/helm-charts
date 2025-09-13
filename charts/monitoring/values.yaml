@@ -2,9 +2,14 @@ labels:
 folder:
 application:
 namespace:
+uid:
 
-alerting:
-  enabled: true
 
 dotnet:
-  enabled: true
+  alerting: 
+    enabled: true
+    http_5xx_threshold: 20
+    cpu_threshold: 80
+    exceptions_threshold: 50
+  
+  dashboards: true

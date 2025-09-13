@@ -2,4 +2,4 @@ alerting:
   enabled: true
 
 dotnet:
-  enabled: true
+  enabled: false
