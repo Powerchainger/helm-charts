@@ -6,6 +6,7 @@ groups:
     folder: "{{ .application }}"
     interval: 1m
     rules:
+{{- if .dotnet.alerting.cpu_enabled }}
       - uid: "{{ .uid }}-cpu-h"
         title: High Process CPU Usage
         condition: C
@@ -44,7 +45,8 @@ groups:
           __panelId__: '2'
           summary: "CPU is over {{ .dotnet.alerting.cpu_threshold }}% for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
-
+{{- end }}
+{{- if .dotnet.alerting.exceptions_enabled }}
       - uid: "{{ .uid }}-exceptions-h"
         title: High .NET Runtime Exception Rate
         condition: C
@@ -83,7 +85,8 @@ groups:
           __panelId__: '4'
           summary: "More than {{ .dotnet.alerting.exceptions_threshold }} exceptions (2m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
-
+{{- end }}
+{{- if .dotnet.alerting.http_5xx_enabled }}
       - uid: "{{ .uid }}-http-5xx-h"
         title: High percentage of 5xx errors
         condition: C
@@ -122,3 +125,4 @@ groups:
           __panelId__: '6'
           summary: "More than {{ .dotnet.alerting.http_5xx_threshold }} 5xx errors (1m) for service {{ .application }} in namespace {{ .namespace }}"
           description: "Service: {{ .application }} | Namespace: {{ .namespace }}"
+{{- end }}
