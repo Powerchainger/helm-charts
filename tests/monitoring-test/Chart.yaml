@@ -3,6 +3,6 @@ name: monitoring-test
 version: 3.0.1
 dependencies:
   - name: monitoring
-    version: 4.0.0
+    version: 4.0.1
     repository: "file://../../charts/monitoring"
 description: A test chart for the monitoring library chart

@@ -8,8 +8,11 @@ uid:
 dotnet:
   alerting: 
     enabled: true
-    http_5xx_threshold: 20
+    cpu_enabled: true
     cpu_threshold: 80
+    exceptions_enabled: false
     exceptions_threshold: 50
+    http_5xx_enabled: true
+    http_5xx_threshold: 20
   
   dashboards: true
